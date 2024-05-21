@@ -24,7 +24,7 @@ lets say if we toss 100, we got 56 heads(H) and 46 tails(T).
 
 The probability of heads: P(H) : 56/100 = 0.56
 
-The probability of tails: P(T): 46/100 = 0.
+The probability of tails: P(T): 46/100 = 0.46
 
 then the entropy would be:
 
