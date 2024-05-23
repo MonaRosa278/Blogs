@@ -421,8 +421,8 @@ blockquote {
 <body>
     <div class="content-wrapper">
         <hr>
-<h2 id="deep-dive-in-cross-entropy-loss" tabindex="-1">Deep Dive in Cross-Entropy Loss</h2>
-<h3 id="introduction-to-entropy" tabindex="-1">Introduction to Entropy</h3>
+<h2 id="cross-entropy-loss" tabindex="-1">Cross Entropy Loss</h2>
+<h1 id="introduction-to-cross-entropy-loss" tabindex="-1">Introduction to Cross Entropy Loss</h1>
 <p>Entropy originated in the field of thermodynamics and was later adapted to information theory by Claude Shannon. Its used to measure **uncertainty or unpredictability **in a system.</p>
 <p>Before this, there was no formal way to <strong>quantify the information</strong> needed to describe a system’s state. You might wonder if this ‘uncertainty’ is the same as the uncertainty we experience in daily life, like being unsure if someone will come to dinner. It’s similar but not the same…</p>
 <p>In everyday use, ‘uncertainty’ means having doubts or a lack of confidence.  <strong>In information theory, ‘uncertainty’ is a precise measure of how much information or surprise an outcome holds, based on the probability distribution of a random variable</strong> . Let’s dive into an example.</p>
@@ -453,23 +453,27 @@ Tails: <span class="hljs-number">512</span>
 <p>Getting a heads is: P(H) = 488 / 1000 = 0.488</p>
 <p>Getting a tail is: P(T) = 512 / 1000 = 0.512</p>
 <p>Now lets simulate a unfair coin toss for 100 times:</p>
-<pre class='hljs'><code><div>
+<pre class='hljs'><code><div><span class="hljs-keyword">import</span> random
+
+<span class="hljs-comment"># Function to simulate an unfair coin toss</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unfair_coin_toss</span>():</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Tails&quot;</span> <span class="hljs-keyword">if</span> random.random() &lt; <span class="hljs-number">5</span>/<span class="hljs-number">6</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;Heads&quot;</span>
+
+<span class="hljs-comment"># Simulate 1000 coin tosses</span>
+tosses = [unfair_coin_toss() <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1000</span>)]
+
+<span class="hljs-comment"># Count the number of heads and tails</span>
+heads_count = tosses.count(<span class="hljs-string">&quot;Heads&quot;</span>)
+tails_count = tosses.count(<span class="hljs-string">&quot;Tails&quot;</span>)
+
+<span class="hljs-comment"># Print the results</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Heads: <span class="hljs-subst">{heads_count}</span>&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Tails: <span class="hljs-subst">{tails_count}</span>&quot;</span>)
+
+----------
+Heads: <span class="hljs-number">177</span>
+Tails: <span class="hljs-number">823</span>
 </div></code></pre>
-<p>import random</p>
-<h1 id="function-to-simulate-an-unfair-coin-toss" tabindex="-1">Function to simulate an unfair coin toss</h1>
-<p>def unfair_coin_toss():
-return &quot;Tails&quot; if random.random() &lt; 5/6 else &quot;Heads&quot;</p>
-<h1 id="simulate-1000-coin-tosses" tabindex="-1">Simulate 1000 coin tosses</h1>
-<p>tosses = [unfair_coin_toss() for _ in range(1000)]</p>
-<h1 id="count-the-number-of-heads-and-tails" tabindex="-1">Count the number of heads and tails</h1>
-<p>heads_count = tosses.count(&quot;Heads&quot;)
-tails_count = tosses.count(&quot;Tails&quot;)</p>
-<h1 id="print-the-results" tabindex="-1">Print the results</h1>
-<p>print(f&quot;Heads: {heads_count}&quot;)
-print(f&quot;Tails: {tails_count}&quot;)</p>
-<hr>
-<p>Heads: 177
-Tails: 823</p>
 <p>The probability:</p>
 <p>Getting a heads is: P(H) = 177 / 1000 = 0.177</p>
 <p>Getting a tail is: P(T) = 823 / 1000 = 0.823</p>
