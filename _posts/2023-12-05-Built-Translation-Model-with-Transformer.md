@@ -1,21 +1,17 @@
 # Step by Step to Build a Multi-Lingual Translation Language Model with Transformer 
 
 language translationIn the "Attention is All You Need" paper, the authors introduced the self-attention mechanism within the encoder-decoder architecture for building translation models. This guide provides a step-by-step tutorial on constructing a translation model using the Transformer architecture. We will code the encoder and decoder, train the model, save checkpoints, and perform inference. This post offers a comprehensive, hands-on approach to building a translation model with the Transformer.
-First lets take a look at this visual representation of the transformer architecture
 
-<<<<<<< HEAD
-=======
-![Transformer Model](image/2024-06-05-Built-Translation-Model-with-Transformer/transformer.png
+The transformer model architecture
 
->>>>>>> 9a68580162126facb1dd418fdca051abeaf05eac
-
+![Transformer Model](image/translation_model/transformer.png)
 
 ## Encoder
 
 The encoder's purpose is to obtain the **best contextual representation for the source language**. It consists of multiple layers, and the input goes through these layers multiple times to yield optimal results. This iterative process allows the encoder to capture the nuances and dependencies within the source language.
 On the left side in the red circle is the encoder layer:
 
-![1717626333348](image/2024-06-05-Built-Translation-Model-with-Transformer/1717626333348.png)
+![Encoder](image/translation_model/encoder.png)
 
 ---
 
@@ -212,7 +208,6 @@ class MultiHeadAttn(nn.Module):
         attn_score = self.norm(attn_score + x)
 
         return attn_score
-```
 
 ### Cross-Head Attention
 
@@ -271,7 +266,7 @@ Cross Attention only modifies the input of Self Attention. The decoder of the Tr
            output = self.norm(output + target)
 
            return output
-   ```
+```
 
 ## Encoder-decoder
 
