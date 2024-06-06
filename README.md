@@ -1,4 +1,4 @@
-# Blogs
+# Machine Learning Blogs
 
 Welcome to my machine learning blog! This repository serves as a platform where I share articles and implementations related to various machine learning concepts and projects. Through this blog, I aim to document my learning journey and provide insights into the fascinating world of machine learning.
 
@@ -36,8 +36,8 @@ In addition to theoretical explanations, this blog features practical implementa
 To get started with this blog, simply clone the repository and navigate through the directories to access the articles and implementations. The articles are written in Markdown format and can be easily read using any Markdown viewer or text editor. The implementations are organized in separate directories, each containing the necessary code and documentation.
 
 ```shell
-git clone https://github.com/your-username/machine-learning-blog.git
-cd machine-learning-blog
+git clone https://github.com/tingaldama278/Blogs.git
+cd Blogs
 ```
 
 ## Contributing
