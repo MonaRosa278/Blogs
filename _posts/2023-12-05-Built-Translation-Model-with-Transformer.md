@@ -1,19 +1,18 @@
-# Step by Step to Build a Multi-Lingual Translation Language model with Transformer 
+# Step by Step to Build a Multi-Lingual Translation Language Model with Transformer 
 
 language translationIn the "Attention is All You Need" paper, the authors introduced the self-attention mechanism within the encoder-decoder architecture for building translation models. This guide provides a step-by-step tutorial on constructing a translation model using the Transformer architecture. We will code the encoder and decoder, train the model, save checkpoints, and perform inference. This post offers a comprehensive, hands-on approach to building a translation model with the Transformer.
 First lets take a look at this visual representation of the transformer architecture
 
-![1717626245889](image/2024-06-05-Built-Translation-Model-with-Transformer/1717626245889.png)
+![Transformer Model](/assets/images/transformer.png)
 
+![1717626245889](image/2024-06-05-Built-Translation-Model-with-Transformer/1717626245889.png)
 
 ## Encoder
 
-The encoder's purpose is to obtain the best contextual representation for the source language. It consists of multiple layers, and the input goes through these layers multiple times to yield optimal results. This iterative process allows the encoder to capture the nuances and dependencies within the source language.
+The encoder's purpose is to obtain the **best contextual representation for the source language**. It consists of multiple layers, and the input goes through these layers multiple times to yield optimal results. This iterative process allows the encoder to capture the nuances and dependencies within the source language.
 On the left side in the red circle is the encoder layer:
 
 ![1717626333348](image/2024-06-05-Built-Translation-Model-with-Transformer/1717626333348.png)
-
-
 
 ---
 
@@ -66,63 +65,60 @@ As the model processes each word in the input sequence, self-attention focuses o
 * Sequence Modeling: Self-attention can be used for modeling sequence data (such as text, time series, audio, etc.). It captures dependencies at different positions within the sequence, thus better understanding the context. This is highly useful for tasks like machine translation, text generation, and sentiment analysis.
 * Parallel Computation: Self-attention allows for parallel computation, which means it can be effectively accelerated on modern hardware. Compared to sequential models like RNNs and CNNs, it is easier to train and infer efficiently on GPUs and TPUs (because scores can be computed in parallel in self-attention).
 * Long-Distance Dependency Capture: Traditional recurrent neural networks (RNNs) may face issues like vanishing or exploding gradients when processing long sequences. Self-attention handles long-distance dependencies better because it doesn't require sequential processing of the input sequence.
-* *Multi-head attention:*
+* Multi-head attention:
 * Enhanced Ability to Focus on Different Positions: Multi-head attention extends the model's ability to focus on different positions within the input sequence.
+* Multiple Sets of Query/Key/Value Weight Matrices: There are multiple sets of query, key, and value weight matrices (Transformers use eight attention heads), each randomly initialized and the weights will be learned in the training process.
 
-  * Multiple Sets of Query/Key/Value Weight Matrices: There are multiple sets of query, key, and value weight matrices (Transformers use eight attention heads), each randomly initialized. Similar to the self-attention mechanism, matrix X is multiplied by WQ, WK, and WV to produce the query, key, and value matrices.
+```python
+   class ScaledProductAttn(nn.Module):
+      def __init__(self, dropout = 0.1):
+         super(ScaledProductAttn, self).__init__()
+         self.dropout = nn.Dropout(p=dropout)
+         self.softmax = nn.Softmax(dim=-1)
 
-    ```python
-     class ScaledProductAttn(nn.Module):
-        def __init__(self, dropout = 0.1):
-           super(ScaledProductAttn, self).__init__()
-           self.dropout = nn.Dropout(p=dropout)
-           self.softmax = nn.Softmax(dim=-1)
+      def forward(self, query, key, value, attn_mask = None):
+          _, _, _, d_k= query.shape
+          assert d_k != 0
+          attn = torch.matmul(query, key.transpose(-1, -2)) / np.sqrt(d_k)
+          if attn_mask is not None:
+              attn = attn.masked_fill(attn_mask == False, float('-inf'))
+          attn = self.dropout(self.softmax(attn))
+          context = torch.matmul(attn, value)
+          return contex
 
-        def forward(self, query, key, value, attn_mask = None):
-            _, _, _, d_k= query.shape
-            assert d_k != 0
-            attn = torch.matmul(query, key.transpose(-1, -2)) / np.sqrt(d_k)
-            if attn_mask is not None:
-                attn = attn.masked_fill(attn_mask == False, float('-inf'))
-            attn = self.dropout(self.softmax(attn))
-            context = torch.matmul(attn, value)
-            return contex
+  class MultiHeadAttn(nn.Module):
+      def __init__(self, n_head, d_model,dropout = 0.1):
+          super(MultiHeadAttn, self).__init__()
+          self.Q = nn.Linear(d_model, d_model)
+          self.K = nn.Linear(d_model, d_model)
+          self.V = nn.Linear(d_model, d_model)
+          self.n_head = n_head
+          self.scaled_dot_attn = ScaledProductAttn(dropout)
+          self.dropout = nn.Dropout(p = dropout)
+          self.norm = nn.LayerNorm(d_model)
 
-    class MultiHeadAttn(nn.Module):
-        def __init__(self, n_head, d_model,dropout = 0.1):
-            super(MultiHeadAttn, self).__init__()
-            self.Q = nn.Linear(d_model, d_model)
-            self.K = nn.Linear(d_model, d_model)
-            self.V = nn.Linear(d_model, d_model)
-            self.n_head = n_head
-            self.scaled_dot_attn = ScaledProductAttn(dropout)
-            self.dropout = nn.Dropout(p = dropout)
-            self.norm = nn.LayerNorm(d_model)
+      def forward(self, x,  attn_mask=None):
+          batch_size, seq_len, d_model = x.shape
+          h_dim = d_model // self.n_head
+          assert h_dim * self.n_head == d_model
+          Q = self.Q(x).view(batch_size, seq_len, self.n_head, h_dim).permute(0,2,1,3)
+          K = self.K(x).view(batch_size, seq_len, self.n_head, h_dim).permute(0,2,1,3)
+          V = self.V(x).view(batch_size, seq_len, self.n_head, h_dim).permute(0,2,1,3)
+          # print(f"the shape of Q: {Q}")
+          # print(f"the shape of K: {K}")
+          # print(f"the shape of V: {V}")
+          # print(f"attn_mask shape: {attn_mask.shape}")
+          if attn_mask is not None:
+              attn_mask = attn_mask.expand(batch_size, self.n_head, seq_len, seq_len)  # Expanding to [batch_size, n_head, seq_len, seq_len]
+          # print(f"attn_mask shape after expansion: {attn_mask.shape}")
+          attn_score = self.scaled_dot_attn(Q, K, V, attn_mask)
+          attn_score = attn_score.permute(0,2,1,3).reshape(batch_size, seq_len, -1)
 
-        def forward(self, x,  attn_mask=None):
-            batch_size, seq_len, d_model = x.shape
-            h_dim = d_model // self.n_head
-            assert h_dim * self.n_head == d_model
-            Q = self.Q(x).view(batch_size, seq_len, self.n_head, h_dim).permute(0,2,1,3)
-            K = self.K(x).view(batch_size, seq_len, self.n_head, h_dim).permute(0,2,1,3)
-            V = self.V(x).view(batch_size, seq_len, self.n_head, h_dim).permute(0,2,1,3)
-            # print(f"the shape of Q: {Q}")
-            # print(f"the shape of K: {K}")
-            # print(f"the shape of V: {V}")
-            # print(f"attn_mask shape: {attn_mask.shape}")
-            if attn_mask is not None:
-                attn_mask = attn_mask.expand(batch_size, self.n_head, seq_len, seq_len)  # Expanding to [batch_size, n_head, seq_len, seq_len]
-            # print(f"attn_mask shape after expansion: {attn_mask.shape}")
-            attn_score = self.scaled_dot_attn(Q, K, V, attn_mask)
-            attn_score = attn_score.permute(0,2,1,3).reshape(batch_size, seq_len, -1)
+          attn_score = self.dropout(attn_score)
+          attn_score = self.norm(attn_score + x)
+          return attn_score
 
-            attn_score = self.dropout(attn_score)
-            attn_score = self.norm(attn_score + x)
-            return attn_score
-
-    ```
-
-
+```
 
 We put everything togther, this is the code for the encoder layer
 
@@ -154,7 +150,6 @@ class EncoderLayer(nn.Module):
 ```
 
 ## Decoder
-
 
 The decoder is a crucial component in the Transformer architecture, responsible for generating the translated tokens in the target language. Its main objective is to capture the dependencies and relationships among the translated tokens while utilizing the representations from the encoder.
 The decoder operates by first performing self-attention on each of the translated tokens in the source language. This self-attention mechanism allows the decoder to consider the context and dependencies within the translated sequence itself. By attending to its own previous outputs, the decoder can generate more coherent and contextually relevant translations. The red circlec is the decoder part of the architecture:
@@ -203,7 +198,7 @@ class MultiHeadAttn(nn.Module):
         Q = self.Q(x).view(batch_size, seq_len, self.n_head, h_dim).permute(0,2,1,3)
         K = self.K(x).view(batch_size, seq_len, self.n_head, h_dim).permute(0,2,1,3)
         V = self.V(x).view(batch_size, seq_len, self.n_head, h_dim).permute(0,2,1,3)
-    
+  
         if attn_mask is not None:
             attn_mask = attn_mask.expand(batch_size, self.n_head, seq_len, seq_len)  # Expanding to [batch_size, n_head, seq_len, seq_len]
         # print(f"attn_mask shape after expansion: {attn_mask.shape}")
@@ -379,7 +374,7 @@ tensor([[ True, False, False, False, False, False],
         [ True,  True,  True,  True,  True,  True]])TrainingzLzpython
 ```
 
-## Training 
+## Training
 
 ### Pytorch dataset & dataloader
 
@@ -421,7 +416,7 @@ def collate_fn(batch):
     validation_loader = DataLoader(validation_dataset, batch_size=32, shuffle=False, collate_fn=collate_fn)
 ```
 
-### Training 
+### Training
 
 Save the checkpoints
 
@@ -521,8 +516,8 @@ sp = spm.SentencePieceProcessor(model_file=spm_model_path)
 translated_sentence = translate(src_sentence, model, sp)
 ```
 
-### Translate Examples: 
+### Translate Examples
 
-Heres the examples of translating english into Spanish, German and Chinese 
+Heres the examples of translating english into Spanish, German and Chinese
 
 ![1717700650918](image/2024-06-05-Built-Translation-Model-with-Transformer/1717700650918.png)
