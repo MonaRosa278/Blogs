@@ -153,7 +153,7 @@ class EncoderLayer(nn.Module):
 The decoder is a crucial component in the Transformer architecture, responsible for generating the translated tokens in the target language. Its main objective is to capture the dependencies and relationships among the translated tokens while utilizing the representations from the encoder.
 The decoder operates by first performing self-attention on each of the translated tokens in the source language. This self-attention mechanism allows the decoder to consider the context and dependencies within the translated sequence itself. By attending to its own previous outputs, the decoder can generate more coherent and contextually relevant translations. The red circlec is the decoder part of the architecture:
 
-![Decoder](image/translation_model/decoder.png)
+![decoder](image/translation_model/decoder.png)
 
 The decoder architecture consists of several key components, including multi-head self-attention, cross-attention, normalization, and regularization techniques. These components work together to enable the decoder to effectively capture the nuances and dependencies in the target language.
 
@@ -211,10 +211,12 @@ class MultiHeadAttn(nn.Module):
 
         return attn_score
 
+```
 ### Cross-Head Attention
 
 Cross Attention only modifies the input of Self Attention. The decoder of the Transformer is shown in the right module of the figure below: 
 
+![crossattn](image/translation_model/inputs.png)
 
 1. With three inputs labeled as input1~3. The decoder recursively inputs input1: the output of the decoder from the previous time step (the first input is `<bos>`, indicating the beginning of the sentence)
 2. Adds it to input2: position encoding representing positional information, and performs cross attention with input3. Intuitively, what Cross Attention does is to use the information of key/value to represent the information of query, or to condition query on the condition of key/value. It can also be said to introduce the information of key/value into the information of query (because there is a residual layer that adds to the original query information), and what is obtained is the relevance of query to key (query attending to key, e.g., vehicle attending to lanes, vice versa).
@@ -267,7 +269,7 @@ Cross Attention only modifies the input of Self Attention. The decoder of the Tr
            output = self.norm(output + target)
 
            return output
-```
+
 
 ## Encoder-decoder
 
