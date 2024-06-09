@@ -49,20 +49,41 @@ How to **systematically analyze** how good an algorithm is for a prediction task
 
 - Data:
 
-  $$
-  (x_1, y_1), (x_2, y_2), ... ∈ X × Y
-  $$
+$$
+$
+$$
+
+ (x_1, y_1), (x_2, y_2), ... ∈ X × Y
+
+$$
+$
+$$
+
 - **Assumption:** There is a (relatively simple) function:
 
-  $$
-  f*: X → Y \text{such that}\
-  f*(x_i) = y_i
-  $$
+$$
+$
+$$
+
+ f*: X → Y \text{ such that }
+ f*(x_i) = y_i
+
+$$
+$
+$$
+
 - **Learning Task:** Given $n$ examples, find an approximation:
 
-  $$
-  \qquad \hat{f} \approx f^*
-  $$
+$$
+$
+$$
+
+ \hat{f} \approx f*
+
+$$
+$
+$$
+
 - **Goal: It gives mostly correct predictions on unseen examples.**
 
 ### **Statistical Modeling Approach:**
@@ -77,18 +98,14 @@ In classification tasks, the task is to build a function that takes in a vector 
 
 The classifier
 
-- **Joint Input/Output Space:** $\mathcal{X} \times \mathcal{Y}$
-- **Data Distribution:** $D(\mathcal{X} \times \mathcal{Y})$
-- **Classifier:** $f: \mathcal{X} \rightarrow \mathcal{Y}$
+- **Joint Input/Output Space:** $X × Y$
+- **Data Distribution:** $D(X × Y)$
+- **Classifier:** $f: X → Y$
 - **Goal:** Maximize the accuracy of the classifier: $\text{acc}(f) := P_{(x,y)}[f(x) = y] = E_{(x,y)}[1[f(x) = y]]$
 
 We want a classifier $f$ that maximizes $\text{acc}$
 
-
-
 ---
-
-
 
 #### Generative Classifier
 
@@ -101,13 +118,17 @@ Examples of generative classifier:
 
 **Bayes classifier:**
 
-$f(\vec{x}) = \arg\max_{y \in Y} P[Y = y|X = \vec{x}]$
+$$
+f(\vec{x}) = \arg\max_{y ∈ Y} P[Y = y|X = \vec{x}]
+$$
 
 **Bayes' Theorem**
 
 Bayes' theorem connects these two concepts:
 
-$P(Y|X) = \frac{P(X|Y) \cdot P(Y)}{P(X)}$
+$$
+P(Y|X) = \frac{P(X|Y) \cdot P(Y)}{P(X)}
+$$
 
 Where:
 
@@ -120,7 +141,8 @@ Where:
 
 A model of form p(y|x) is classed a discriminative classifier. it work by modeling the decision boundary directly between classes without explicitly computing the joint or conditional probabilities. Instead of modeling how data is generated, discriminative classifiers focus on learning the relationship between the features and the labels.
 
-$g(x) = \mathcal{X} \rightarrow \mathcal{Y}$ where $\mathcal{Y}$ represents the set of possible class labels, typically $\{0, 1, 2, \ldots, k-1\}$ for $k$ classes.
+$$
+g(x) = X → Y$$ where $Y$ represents the set of possible class labels, typically $\{0, 1, 2, ..., k-1\}$ for $k$ classes.
 
 Examples of discriminative classifier:
 
@@ -132,9 +154,12 @@ Examples of discriminative classifier:
 
 In statistics, **maximum likelihood estimation (MLE)** is a method of estimating the parameters of an assumed probability distribution, given some observed data. This is achieved by maximizing a likelihood function so that, under the assumed statistical model, the observed data is most probable.
 
-$\mathcal{L}(\theta|X) := P(X|\theta) = P(\vec{x}_1, \ldots, \vec{x}_n|\theta) = \prod_{i=1}^{n} P(\vec{x}_i|\theta) = \prod_{i=1}^{n} p_{\theta}(\vec{x}_i)$
+$$\mathcal{L}(\theta|X) := P(X|\theta) = P(\vec{x}_1, ..., \vec{x}_n|\theta) = \prod_{i=1}^{n} P(\vec{x}_i|\theta) = \prod_{i=1}^{n} p_{\theta}(\vec{x}_i)
+$$
 
-$\hat{\theta}_{\text{MLE}} = \arg\max_{\theta} \mathcal{L}(\theta|X) = \arg\max_{\theta} P(X|\theta) = \arg\max_{\theta} \prod_{i=1}^{n} P(\vec{x}_i|\theta) = \arg\max_{\theta} \prod_{i=1}^{n} p_{\theta}(\vec{x}_i)$
+$$
+\hat{\theta}_{\text{MLE}} = \arg\max_{\theta} \mathcal{L}(\theta|X) = \arg\max_{\theta} P(X|\theta) = \arg\max_{\theta} \prod_{i=1}^{n} P(\vec{x}_i|\theta) = \arg\max_{\theta} \prod_{i=1}^{n} p_{\theta}(\vec{x}_i)
+$$
 
 #### Case Study: Email Classification with Bayes Classifier
 
@@ -147,40 +172,54 @@ We want to classify emails as "spam" or "not spam" based on features like the pr
 
 ##### Step 1: Bayes Classifier
 
-The Bayes classifier aims to find the class $y$ (spam or not spam) that maximizes the posterior probability $P(Y = y \mid X = x)$.
+The Bayes classifier aims to find the class $y$ (spam or not spam) that maximizes the posterior probability $P(Y = y | X = x)$.
 
-$f(x) = \arg\max_{y \in \{ \text{spam, not spam} \}} P(Y = y \mid X = x)$
+$$
+f(x) = \arg\max_{y ∈ \{ \text{spam, not spam} \}} P(Y = y | X = x)
+$$
 
 Using Bayes' theorem:
 
-$P(Y = y \mid X = x) = \frac{P(X = x \mid Y = y) \cdot P(Y = y)}{P(X = x)}$
+$$
+P(Y = y | X = x) = \frac{P(X = x | Y = y) \cdot P(Y = y)}{P(X = x)}
+$$
 
 For classification purposes, we can ignore $P(X = x)$ because it is the same for both classes:
 
-$f(x) = \arg\max_{y \in \{ \text{spam, not spam} \}} P(X = x \mid Y = y) \cdot P(Y = y)$
+$$
+f(x) = \arg\max_{y ∈ \{ \text{spam, not spam} \}} P(X = x | Y = y) \cdot P(Y = y)
+$$
 
 ##### Step 2: Estimating Probabilities Using MLE
 
 To use the Bayes classifier, we need to estimate the following probabilities from our data:
 
 1. **Prior Probability $P(Y = y)$**: The probability that an email is "spam" or "not spam".
-2. **Likelihood $P(X = x \mid Y = y)$**: The probability of observing the features $x$ given that the email is "spam" or "not spam".
+2. **Likelihood $P(X = x | Y = y)$**: The probability of observing the features $x$ given that the email is "spam" or "not spam".
 
 **Estimating Prior Probability $P(Y = y)$**
 
-$P(Y = \text{spam}) = \frac{\text{Number of spam emails}}{\text{Total number of emails}}$
+$$
+P(Y = \text{spam}) = \frac{\text{Number of spam emails}}{\text{Total number of emails}}
+$$
 
-$P(Y = \text{not spam}) = \frac{\text{Number of not spam emails}}{\text{Total number of emails}}$
+$$
+P(Y = \text{not spam}) = \frac{\text{Number of not spam emails}}{\text{Total number of emails}}
+$$
 
-**Estimating Likelihood $P(X = x \mid Y = y)$ Using MLE**
+**Estimating Likelihood $P(X = x | Y = y)$ Using MLE**
 
 We assume that the features $X$ (e.g., presence of words) follow a certain distribution. For simplicity, let's assume that the features are binary (presence or absence of certain words) and follow a Bernoulli distribution.
 
 For each feature $X_i$:
 
-$P(X_i = 1 \mid Y = \text{spam}) = \theta_{i,\text{spam}}$
+$$
+P(X_i = 1 | Y = \text{spam}) = \theta_{i,\text{spam}}
+$$
 
-$P(X_i = 0 \mid Y = \text{spam}) = 1 - \theta_{i,\text{spam}}$
+$$
+P(X_i = 0 | Y = \text{spam}) = 1 - \theta_{i,\text{spam}}
+$$
 
 Where $\theta_{i,\text{spam}}$ is the probability of the word $i$ appearing in a spam email. We use MLE to estimate $\theta_{i,\text{spam}}$.
 
@@ -188,21 +227,29 @@ Where $\theta_{i,\text{spam}}$ is the probability of the word $i$ appearing in a
 
 For a binary feature $X_i$:
 
-$\mathcal{L}(\theta_{i,\text{spam}}) = \prod_{j=1}^{n} \theta_{i,\text{spam}}^{x_{ij}} (1 - \theta_{i,\text{spam}})^{1 - x_{ij}}$
+$$
+\mathcal{L}(\theta_{i,\text{spam}}) = \prod_{j=1}^{n} \theta_{i,\text{spam}}^{x_{ij}} (1 - \theta_{i,\text{spam}})^{1 - x_{ij}}
+$$
 
 Where $x_{ij}$ is the value of the $i$-th feature for the $j$-th email (1 if the word is present, 0 otherwise).
 
 The log-likelihood is:
 
-$\log \mathcal{L}(\theta_{i,\text{spam}}) = \sum_{j=1}^{n} \left[ x_{ij} \log \theta_{i,\text{spam}} + (1 - x_{ij}) \log (1 - \theta_{i,\text{spam}}) \right]$
+$$
+\log \mathcal{L}(\theta_{i,\text{spam}}) = \sum_{j=1}^{n} \left[ x_{ij} \log \theta_{i,\text{spam}} + (1 - x_{ij}) \log (1 - \theta_{i,\text{spam}}) \right]
+$$
 
 Taking the derivative with respect to $\theta_{i,\text{spam}}$ and setting it to zero:
 
-$\frac{\partial}{\partial \theta_{i,\text{spam}}} \log \mathcal{L}(\theta_{i,\text{spam}}) = \sum_{j=1}^{n} \left[ \frac{x_{ij}}{\theta_{i,\text{spam}}} - \frac{1 - x_{ij}}{1 - \theta_{i,\text{spam}}} \right] = 0$
+$$
+\frac{\partial}{\partial \theta_{i,\text{spam}}} \log \mathcal{L}(\theta_{i,\text{spam}}) = \sum_{j=1}^{n} \left[ \frac{x_{ij}}{\theta_{i,\text{spam}}} - \frac{1 - x_{ij}}{1 - \theta_{i,\text{spam}}} \right] = 0
+$$
 
 Solving for $\theta_{i,\text{spam}}$:
 
-$\hat{\theta}_{i,\text{spam}} = \frac{\sum_{j=1}^{n} x_{ij}}{n}$
+$$
+\hat{\theta}_{i,\text{spam}} = \frac{\sum_{j=1}^{n} x_{ij}}{n}
+$$
 
 This is the proportion of emails where the word $i$ appears in spam emails.
 
@@ -210,11 +257,15 @@ This is the proportion of emails where the word $i$ appears in spam emails.
 
 Using the estimated probabilities:
 
-$f(x) = \arg\max_{y \in \{ \text{spam, not spam} \}} \left( P(X = x \mid Y = y) \cdot P(Y = y) \right)$
+$$
+f(x) = \arg\max_{y ∈ \{ \text{spam, not spam} \}} \left( P(X = x | Y = y) \cdot P(Y = y) \right)
+$$
 
 For each class $y$:
 
-$P(X = x \mid Y = y) = \prod_{i=1}^{m} \hat{\theta}_{i,y}^{x_i} (1 - \hat{\theta}_{i,y})^{1 - x_i}$
+$$
+P(X = x | Y = y) = \prod_{i=1}^{m} \hat{\theta}_{i,y}^{x_i} (1 - \hat{\theta}_{i,y})^{1 - x_i}
+$$
 
 Where $\hat{\theta}_{i,y}$ is the MLE estimate of the likelihood of feature $i$ given class $y$.
 
@@ -244,11 +295,23 @@ Given a new email with "free" (X = [1]):
 
 Calculate the posterior probabilities:
 
-- $P(X = [1] \mid Y = \text{spam}) = \frac{2}{3}$
-- $P(X = [1] \mid Y = \text{not spam}) = \frac{1}{7}$
+- $P(X = [1] | Y = \text{spam}) = \frac{2}{3}$
+- $P(X = [1] | Y = \text{not spam}) = \frac{1}{7}$
 
 Bayes classifier:
-$f([1]) = \arg\max_{y} P(X = [1] \mid Y = y) \cdot P(Y = y)$
-$= \arg\max \left( \frac{2}{3} \cdot 0.3, \frac{1}{7} \cdot 0.7 \right)$
-$= \arg\max \left( 0.2, 0.1 \right)$
-$= \text{spam}$
+
+$$
+f([1]) = \arg\max_{y} P(X = [1] | Y = y) \cdot P(Y = y)
+$$
+
+$$
+= \arg\max \left( \frac{2}{3} \cdot 0.3, \frac{1}{7} \cdot 0.7 \right)
+$$
+
+$$
+= \arg\max \left( 0.2, 0.1 \right)
+$$
+
+$$
+= \text{spam}
+$$
