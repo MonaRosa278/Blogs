@@ -58,11 +58,14 @@ How to **systematically analyze** how good an algorithm is for a prediction task
 
   $$
   f^*: \mathcal{X} \rightarrow \mathcal{Y} \\
-  such that:\\
   f^*(x_i) = y_i
   $$
-- **Learning Task:** Given $n$ examples, find an approximation: $\hat{f} \approx f^*$
-- **Goal:** $\hat{f}$ gives mostly correct predictions on unseen examples.
+- **Learning Task:** Given $n$ examples, find an approximation:
+
+  $$
+  \hat{f}\approx f^*
+  $$
+- **Goal: It gives mostly correct predictions on unseen examples.**
 
 ### **Statistical Modeling Approach:**
 
