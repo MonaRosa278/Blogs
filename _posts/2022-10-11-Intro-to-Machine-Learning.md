@@ -55,8 +55,7 @@ How to **systematically analyze** how good an algorithm is for a prediction task
 - **Assumption:** There is a (relatively simple) function:
 
   $$
-  f*: X → Y \text{such that}\
-  f*(x_i) = y_i
+  f*: X → Y \text{such that}\ f*(x_i) = y_i
   $$
 - **Learning Task:** Given $n$ examples, find an approximation:
 
@@ -84,11 +83,7 @@ The classifier
 
 We want a classifier $f$ that maximizes $\text{acc}$
 
-
-
 ---
-
-
 
 #### Generative Classifier
 
@@ -96,8 +91,8 @@ A model with form p(x,y) = p(y)p(x|y) is called a generative classifier, since i
 
 Examples of generative classifier:
 
-* Native Bayes Classifier
-* Gaussian Mixture Model (GMM)
+- Native Bayes Classifier
+- Gaussian Mixture Model (GMM)
 
 **Bayes classifier:**
 
@@ -111,10 +106,10 @@ $P(Y|X) = \frac{P(X|Y) \cdot P(Y)}{P(X)}$
 
 Where:
 
-* $P(Y|X)$ is the posterior probability: This is the probability of the class $Y$ given the observed data $X$. It is what we ultimately want to calculate in classification tasks, and it tells us how probable a class is given the observed features.
-* $P(X|Y)$ is the likelihood: This is the probability of observing the data (features) $X$ given a particular class $Y$. It's used to measure how likely the observed data is for different possible classes.
-* $P(Y)$ is the prior probability of the class $Y$.
-* $P(X)$ is the evidence (overall probability of the data)
+- $P(Y|X)$ is the posterior probability: This is the probability of the class $Y$ given the observed data $X$. It is what we ultimately want to calculate in classification tasks, and it tells us how probable a class is given the observed features.
+- $P(X|Y)$ is the likelihood: This is the probability of observing the data (features) $X$ given a particular class $Y$. It's used to measure how likely the observed data is for different possible classes.
+- $P(Y)$ is the prior probability of the class $Y$.
+- $P(X)$ is the evidence (overall probability of the data)
 
 #### Discriminative Classifier
 
@@ -124,9 +119,9 @@ $g(x) = \mathcal{X} \rightarrow \mathcal{Y}$ where $\mathcal{Y}$ represents the 
 
 Examples of discriminative classifier:
 
-* Logistic Regression
-* Support Vector Machines (SVM)
-* Neural Networks
+- Logistic Regression
+- Support Vector Machines (SVM)
+- Neural Networks
 
 #### Maximum Likelihood Estimation (MLE)
 
