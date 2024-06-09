@@ -49,8 +49,18 @@ How to **systematically analyze** how good an algorithm is for a prediction task
 
 ## Supervised Learning
 
-- **Data:** $(x_1, y_1), (x_2, y_2), \ldots \in \mathcal{X} \times \mathcal{Y}$
-- **Assumption:** There is a (relatively simple) function $f^*: \mathcal{X} \rightarrow \mathcal{Y}$ such that $f^*(x_i) = y_i$ for most $i$.
+- **Data:**
+
+  $$
+  (x_1, y_1), (x_2, y_2), \ldots \in \mathcal{X} \times \mathcal{Y}`
+  $$
+- **Assumption:** There is a (relatively simple) function:
+
+  $$
+  f^*: \mathcal{X} \rightarrow \mathcal{Y} \\
+  such that:\\
+  f^*(x_i) = y_i
+  $$
 - **Learning Task:** Given $n$ examples, find an approximation: $\hat{f} \approx f^*$
 - **Goal:** $\hat{f}$ gives mostly correct predictions on unseen examples.
 
