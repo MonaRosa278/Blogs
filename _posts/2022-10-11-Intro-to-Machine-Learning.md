@@ -47,9 +47,9 @@ How to **systematically analyze** how good an algorithm is for a prediction task
 
 ## Supervised Learning
 
-- **Data**:$(x_1, y_1), (x_2, y_2), ...∈ X×Y$
+- **Data**:$(x_1, y_1), (x_2, y_2), \ldots \in X \times Y$
 
-- **Assumption:** There is a (relatively simple) function:$f^*: X -> Y$ such that $f^*(\vec{x_i}) = y_i$ for most i 
+- **Assumption:** There is a (relatively simple) function:$f^*: X \to Y$ such that $f^*(\vec{x}_i) = y_i$ for most $i$
 
 - **Learning Task:** Given $n$ examples, find an approximation: $\hat{f} \approx f^*$
 
@@ -207,39 +207,3 @@ $$P(X = x \mid Y = y) = \prod_{i=1}^{m} \hat{\theta}_{i,y}^{x_i} (1 - \hat{\thet
 
 Where $\hat{\theta}_{i,y}$ is the MLE estimate of the likelihood of feature $i$ given class $y$.
 
-<!-->
-##### Example
-
-Assume we have the following data:
-
-- **Spam emails**: 3 out of 10
-- **Features (words):** "free" (1 if present, 0 if not)
-
-Emails:
-
-- Spam: [1, 1, 0]
-- Not spam: [0, 0, 1, 0, 0, 0, 0, 0]
-
-Calculate:
-
-- $P(Y = \text{spam}) = 0.3$
-- $P(Y = \text{not spam}) = 0.7$
-
-MLE for feature "free":
-
-- $\hat{\theta}_{\text{free, spam}} = \frac{2}{3}$
-- $\hat{\theta}_{\text{free, not spam}} = \frac{1}{7}$
-
-Given a new email with "free" (X = [1]):
-
-Calculate the posterior probabilities:
-
-- $P(X = [1] \mid Y = \text{spam}) = \frac{2}{3}$
-- $P(X = [1] \mid Y = \text{not spam}) = \frac{1}{7}$
-
-Bayes classifier:
-$$f([1]) = \arg\max_{y} P(X = [1] \mid Y = y) \cdot P(Y = y)$$
-$$= \arg\max \left( \frac{2}{3} \cdot 0.3, \frac{1}{7} \cdot 0.7 \right)$$
-$$= \arg\max \left( 0.2, 0.1 \right)$$
-$$= \text{spam}$$
---->
