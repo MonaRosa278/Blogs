@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Intro to Machine Learning"
+date: 2022-10-11
+categories: machine-learning
+---
 # Intro to Machine Learning
 
 ## Machine Learning
