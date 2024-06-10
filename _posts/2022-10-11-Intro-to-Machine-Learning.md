@@ -47,21 +47,12 @@ How to **systematically analyze** how good an algorithm is for a prediction task
 
 ## Supervised Learning
 
-- Data:
+- **Data**:$(x_1, y_1), (x_2, y_2), ...∈ X×Y$
 
-  $$
-  (x_1, y_1), (x_2, y_2), ... \in X \times Y
-  $$
-- **Assumption:** There is a (relatively simple) function:
+- **Assumption:** There is a (relatively simple) function:$f^*: X -> Y$ such that $f^*(\vec{x_i}) = y_i$ for most i 
 
-  $$
-  f^*: X \rightarrow Y \text{ such that } f^*(x_i) = y_i
-  $$
-- **Learning Task:** Given $n$ examples, find an approximation:
+- **Learning Task:** Given $n$ examples, find an approximation: $\hat{f} \approx f^*$
 
-  $$
-  \hat{f} \approx f^*
-  $$
 - **Goal: It gives mostly correct predictions on unseen examples.**
 
 ### **Statistical Modeling Approach:**
@@ -129,9 +120,10 @@ Examples of discriminative classifier:
 
 In statistics, **maximum likelihood estimation (MLE)** is a method of estimating the parameters of an assumed probability distribution, given some observed data. This is achieved by maximizing a likelihood function so that, under the assumed statistical model, the observed data is most probable.
 
-$$L(\theta|X) := P(X|\theta) = P(\vec{x}_1, \ldots, \vec{x}_n|\theta) = \prod_{i=1}^{n} P(\vec{x}_i|\theta) = \prod_{i=1}^{n} p_{\theta}(\vec{x}_i)$$
+$$(\theta|X) := P(X|\theta) = P(\vec{x}_1, \ldots, \vec{x}_n|\theta) = \prod_{i=1}^{n} P(\vec{x}_i|\theta) = \prod_{i=1}^{n} p_{\theta}(\vec{x}_i)$$
 
 $$\hat{\theta}_{\text{MLE}} = \arg\max_{\theta} L(\theta|X) = \arg\max_{\theta} P(X|\theta) = \arg\max_{\theta} \prod_{i=1}^{n} P(\vec{x}_i|\theta) = \arg\max_{\theta} \prod_{i=1}^{n} p_{\theta}(\vec{x}_i)$$
+
 
 #### Case Study: Email Classification with Bayes Classifier
 
@@ -215,6 +207,7 @@ $$P(X = x \mid Y = y) = \prod_{i=1}^{m} \hat{\theta}_{i,y}^{x_i} (1 - \hat{\thet
 
 Where $\hat{\theta}_{i,y}$ is the MLE estimate of the likelihood of feature $i$ given class $y$.
 
+<!-->
 ##### Example
 
 Assume we have the following data:
@@ -249,3 +242,4 @@ $$f([1]) = \arg\max_{y} P(X = [1] \mid Y = y) \cdot P(Y = y)$$
 $$= \arg\max \left( \frac{2}{3} \cdot 0.3, \frac{1}{7} \cdot 0.7 \right)$$
 $$= \arg\max \left( 0.2, 0.1 \right)$$
 $$= \text{spam}$$
+--->
