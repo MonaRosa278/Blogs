@@ -1,5 +1,6 @@
 ---
-Cross Entropy Loss
+
+
 ---
 # Introduction to Cross Entropy Loss
 
