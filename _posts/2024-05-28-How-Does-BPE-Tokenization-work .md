@@ -1,4 +1,10 @@
-# How Does BPE Tokenization Work
+---
+title: "How Does BPE Tokenization Work"
+date: 2024-05-28
+categories:
+   - tokenization
+summary: Before we dive into BPE algorithm, lets take a look at Tokenization. Tokenization is the process of breaking down text into smaller units called tokens. In the context of the Byte Pair Encoding (BPE) algorithm, tokenization involves splitting words into subword units based on a learned vocabulary. The BPE tokenizer aims to find a balance between representing the text with a limited vocabulary size while still capturing meaningful subword units.
+---
 
 Before we dive into BPE algorithm, lets take a look at Tokenization. Tokenization is the process of breaking down text into smaller units called tokens. In the context of the Byte Pair Encoding (BPE) algorithm, tokenization involves splitting words into subword units based on a learned vocabulary. The BPE tokenizer aims to find a balance between representing the text with a limited vocabulary size while still capturing meaningful subword units.
 
